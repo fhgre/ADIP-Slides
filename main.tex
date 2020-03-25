@@ -40,56 +40,70 @@
 	
 	\begin{frame}
 		\frametitle{Introduction}
-		Vehicular heatstroke is largely underestimated by the general public. The majority of parents are misinformed and would like to believe that they could \textbf{never forget} their child in a vehicle.
+		Vehicular heatstroke is largely underestimated by the general public. The majority of parents are misinformed and likely to believe that they could \textbf{never forget} their child in a vehicle.
+		
+		\bigskip
 		
 		In over 55\% of these cases, the person responsible for the child’s death unknowingly left them in the vehicle. The most dangerous mistake one can make is to think leaving a child alone in a vehicle could never happen to them.
 	\end{frame}
 
 	\begin{frame}
 		\frametitle{Introduction}
-		The inside of a vehicle heats up very quickly! Even with the windows cracked, the temperature inside a car can reach 51 degrees Celsius in minutes.
+		The inside of a vehicle heats up very quickly! Even with the windows cracked, the temperature inside a car can reach \textbf{51 degrees Celsius} in minutes.
 		
-		A child body overheats three to five times faster compared to an adult, and heatstroke occurs when the body's temperature exceeds 40 degrees Celsius and the body organs begin to shut down.
+		\bigskip
+				
+		A child's  body overheats three to five times faster compared to an adult, and heatstroke occurs when the body's temperature exceeds 40 degrees Celsius and the body organs begin to shut down.
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Introduction: some data}
+		\frametitle{Introduction: Some Data}
 		\begin{figure}
 			\centering
-			\includegraphics[width=0.9\textwidth]{img/histo-by-month.png}
-			\label{fig:heatstroke_month}
+			\includegraphics[width=0.8\textwidth, height=0.8\textheight]{img/heatstroke_hist.pdf}
+			\label{fig:heatstroke_hist}
 		\end{figure}		
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Introduction: some data}
-		\begin{figure}
-			\centering
-			\includegraphics[width=0.9\textwidth]{img/histo-by-year.png}
-			\label{fig:heatstroke_year}
-		\end{figure}		
-	\end{frame}
-
-	\begin{frame}
-		\frametitle{Project proposal}
-		Based on what we have learned about Computer Vision and Image Processing, a possible solution would be to design a new system which enables adult/child's face detection % TODO Come continuare?
+		\frametitle{Introduction: Project Proposal}
+		Based on what we have learned about Computer Vision and Image Processing, a possible solution would be to design a new system which enables \textbf{adult/child's face detection}.
+		
+		Even better, a hybrid solution which combines several way of measuring/sensing the child's presence would be more robust.
+		
+		\bigskip
+		
+		Our proposal is composed of three main steps:
+		\begin{itemize}
+			\item Collecting the data and building a dataset;
+			\item Model selection and synthetic testing;
+			\item Field testing of the best model.
+		\end{itemize}
 	\end{frame}
 	
 	\section{The Dataset}
 	
 	\begin{frame}
-		\frametitle{Data gathering - DA RIVEDERE E RIASSUMERE}
-		The toughest part of the project has actually been gathering pictures of children under the age of 3 years old.
+		\frametitle{The Dataset: Collecting The Data}
+		This is the most challenging part of the project. Getting pictures of children under the age of 3 years old is not that easy.
+		
+		\bigskip
 	
-		We initially gathered images from Google images, but most of our searches were blocked due to the sensitive nature of the subjects involved.
+		In the beginning, we scraped images from Google Images, but we opted for a pre-existing licensed dataset \footfullcite{eidinger2014age}.
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Data gathering}
-		After gathering around 300 images with children in them, we started labelling the faces by hand, a process which proved to be very long and with a really small output.
-	
-		So we resorted to feed our images to a face extractor\footnote{First, HAAR cascade, then MTCNN} but still we had very few images.
-		We finally came across a dataset that contained \textbf{CHIEDERE A FRANCESCO}. Still, the number of examples was small.
+		\frametitle{The Dataset: Sub-sampling And Dataset Adjustments}
+		Since the pre-existing dataset is designed for a multi-class age classification task, we applied sub-sampling.
+		
+		\bigskip
+		
+		This yields an equal number of samples for adults and children, thus focusing the problem on a \textbf{binary classification task}.
+		
+		\bigskip
+		
+		Moreover, we decided that the images should mostly contain faces with as little background as possible. To this end, we fed our images into a face extractor\footnote{We settled for MTCNN over HAAR cascade.}.
+
 	\end{frame}
 
 	\begin{frame}
