@@ -130,7 +130,26 @@
 	
 	\begin{frame}
 		\frametitle{MTCNN}
-		TODO
+		Framework:
+		\begin{itemize}
+			\item Image resizing for the creation of a piramid of images
+			\item The image piramid is fed to three different CNNs:
+			\begin{enumerate}
+				\item First, the \textbf{P-Net} produces a large number of candidate BBs\footnote{BB = Bounding box} and performs BB regression, followed by NMS\footnote{Non-maximum suppression} for merging the overlapping ones.
+				\item Surviving candidates are fed to the \textbf{R-net} that performs BB regression and again NMS.
+				\item At last, the survived boxes are fed to the \textbf{Q-net} that performs similarly to the R-net but it is more complicated and outputs the positions of \textbf{five facial landmarks}.
+			\end{enumerate}
+		\end{itemize}
+	\end{frame}
+	
+	\begin{frame}
+		\frametitle{MTCNN}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{img/schema_mtcnn.JPG}
+    		\caption{MTCNN schematics\footfullcite{zhang2016joint}.}
+    		\label{fig:schema_mtcnn}
+		\end{figure}
 	\end{frame}
 	
 	\begin{frame}
@@ -140,8 +159,16 @@
 	
 	\begin{frame}
 		\frametitle{Siamese Neural Network}
-		As previously mentioned, age classification is a challenging problem due to the complexity of the features that make up a face.\\
-		So we chose a \textbf{discriminative} approach, since we want to be able to separate \textbf{children} from \textbf{non-children}. \\
+		As previously mentioned, age classification is a challenging problem due to the complexity of the features that make up a face.
+		
+		\bigskip
+		
+		
+		So we chose a \textbf{discriminative} approach, since we want to be able to separate \textbf{children} from \textbf{non-children}.
+		
+		\bigskip
+		
+		
 		This was achieved by taking advantage of a \textbf{Siamese neural network}\footnote{Actually there is only one network that is used to process the two inputs.} that takes two inputs: a \textbf{template} image and the input image from the face extractor and checks if they belong to the same class or not. 	
 	\end{frame}
 	
@@ -178,18 +205,28 @@
 	\end{frame}
 	
 	\begin{frame}
-		\frametitle{Siamese Neural Network - Our Architectures}
-		We used different architectures to achieve our goal:\\
-		INSERIRE TABELLA
-	\end{frame}
-	
-	\begin{frame}
 		\frametitle{Siamese Neural Network - Discrimination module}
 		The CNN part of the system actually works as an image encoder, extracting features from both the template and the input image \footnote{Could be optimized at runtime by preprocessing the templates},
-		which are then fed to the \textbf{discrimination module}.\\
-		The paper that inspired this approach \textbf{(\href{https://papers.nips.cc/paper/769-signature-verification-using-a-siamese-time-delay-neural-network.pdf}{Signature verification using a siamese time-delay neural network})} used a joining neuron that calculated the cosine distance between the encoded vectors.\\
-		At first we used the absolute value of the difference between the two encoded vectors (\textbf{FORMULA?}) as the discriminant, then we substituted it with a \textbf{multi-layered perceptron} for increased performance.
-	\end{frame}		
+		which are then fed to the \textbf{discrimination module}.
+		
+		The paper\footfullcite{bromley1994signature} that inspired this approach used a joining neuron that calculated the cosine distance between the encoded vectors.
+		
+		We decided to implement two different discriminator modules, one based on the \textbf{euclidean distance} between the CNN-encoded vectors and for the other one a \textbf{multi-layered perceptron} which was fed the concatenation of the two encoded vectors.
+	\end{frame}	
+	
+	\begin{frame}
+		\frametitle{Siamese Neural Network - Model selection strategies}
+		We began our work by implementing a modified, slimmed-down version of the VGG16 architecture, based on the remarkable results that this model obtained in \textbf{ILSVRC}\footnote{ImageNet Large Scale Visual Recognition Competition} 2014.
+	
+		\bigskip
+		
+		However, we were not satisfied with the results, so we decided to build a custom network and started the cross-validation process. This however was taking too long even for a small subset of hyperparameters (although it was giving very decent results when we stopped it, see table below).
+		
+		\bigskip
+		
+		So we devised a very simple evolutionary algorithm, with accuracy on validation set as fitness function.
+	\end{frame}
+		
 	
 	\begin{frame}
 		\frametitle{Use-case process pipeline}
@@ -210,7 +247,37 @@
 	
 	\begin{frame}
 		\frametitle{Siamese Neural Network - Training results}
-		TODO
+		We tested the resulting networks on the appropriately\footnote{Two different sets, one for adults and one for children} held-out test set and obtained\footnote{H = Hinge loss}
+		\begin{table}[]
+			\centering
+			\resizebox{0.8\textwidth}{!}{%
+				\begin{tabular}{||c c c||}
+					\hline
+					Model & Accuracy & Loss  \\ [0.5ex] 
+					\hline\hline
+					VGG16 + MLP (Adults) & 90.43\% & 0.5991 (H) \\ 
+					\hline
+					VGG16 + MLP (Child) & 90.24\% & 0.5986 (H) \\ 
+					\hline
+					CV (Child) & 93.06\% & 0.5751 (H) \\
+					\hline
+					\textbf{Evo (Child)} & \textbf{94.07\%} & \textbf{0.5628} (H)  \\
+					\hline
+					\textbf{Evo (Adults)} & \textbf{93.46\%} & \textbf{0.5658} (H) \\ [1ex] 
+					\hline
+				\end{tabular}%
+			}
+		\end{table}
+	\end{frame}
+	
+	\begin{frame}
+		\frametitle {Siamese Neural Network - Selected architectures}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.9\textwidth, height=0.65\textheight]{img/schema_modelli_unico.png}
+    		\caption{Selected architectures, Optimizer (both): Nadam}
+    		\label{fig:selected_architectures}
+		\end{figure}
 	\end{frame}
 	
 	% TODO La section future work è meglio farla come una "sequenza" di frame
