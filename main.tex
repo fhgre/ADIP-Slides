@@ -163,32 +163,42 @@
 	\end{frame}
 	
 	\begin{frame}
-		\frametitle{Fischerface - Generalities and Training}
-		Given the real-time nature of the problem we are facing, we decided to try using also a leaner method to determine wether the face in the picture belongs to a chid or an adult: Fisherface.\\ \bigskip
-		During the Training phase each picture in the dataset is flattened into a single vector. After this, the PCA\footnote{Principal Component Analysis.} is performed over all the dataset, in order to find a new basis to represent our data with a reduced dimensionality\footfullcite{Belhumeur1997}.
+		\frametitle{Fisherface - Generalities and Training}
+		Given the real-time nature of the problem we are facing, we decided to try and use also a leaner method to determine whether a face in the image belongs to a child or an adult: Fisherface.
+		
+		\bigskip
+		
+		Each sample is flattened into a single vector during the training phase. Then, a PCA\footnote{Principal Component Analysis.} is performed over all the dataset, in order to find a new basis to represent our data with a reduced dimensionality\footfullcite{Belhumeur1997}.
 		 
 	\end{frame}
 	
-		\begin{frame}
+	\begin{frame}
 		\frametitle{Fischerface - Training}
-		Once the dataset is projected onto the new basis, we use it to compute the covariance matrix and the mean vector for each class. \\ \bigskip
-		The covariance matrices and the mean vectors are used to find a generalised eigenvector onto which we can project the data achieving a good separation between the projections related to different classes.
+		Once the dataset is projected onto the new basis, we use it to compute the covariance matrix and the mean vector for each class.
+		
+		\bigskip
+		
+		The covariance matrices and the mean vectors are used to find a generalized eigenvector onto which we can project the data achieving a good separation between the projections related to different classes.
 		\begin{figure}
 			\centering
 			\includegraphics[width=0.8\textwidth]{img/Fisherface.png}
     		\caption{\begin{small}
-    		Values of the projection onto the generalised eigenvector, the triangles indicate the first standard deviation w.r.t the mean.
+    		Values of the projection onto the generalized eigenvector. The triangles indicate the first standard deviation w.r.t the mean.
     		\end{small}}
     		\label{fig:fisherface_projection}
 		\end{figure}
 	\end{frame}
+
 	\begin{frame}
 		\frametitle{Fischerface - Test}
-		The dot product between the basis resulting from the PCA and the generalised eigenvector, we obtain a trasformation wich projects the flattened pictures directly on the latter, making this method particularly suitable for our problem. \\ \bigskip
+		The dot product between the basis resulting from the PCA and the generalized eigenvector, we obtain a transformation which projects the flattened pictures directly on the latter, making this method particularly suitable for our problem.
+		
+		\bigskip
+		
 		In the use case the pictures extracted by the MTCNN will only have to go through the following steps:
 		\begin{itemize}
 		\item The picture must be resized and flattened, then
-		\item Projected onto the generalised eigenvector, and finally
+		\item Projected onto the generalized eigenvector, and finally
 		\item The projection has to be compared with a threshold $T$ (if it is $>T$ it will be classified as child, otherwise as adult) 
 		\end{itemize}
 	\end{frame}
