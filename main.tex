@@ -119,6 +119,16 @@
 	\section{Proposed Models}
 	
 	\begin{frame}
+		\frametitle{Use-Case Overview}
+		The classification task consists of 3 steps:
+		\begin{enumerate}
+			\item Image acquisition from a USB camera (e.g Logitech C270);
+			\item Face extraction with MTCNN;
+			\item Classification of the extracted faces.
+		\end{enumerate}
+	\end{frame}	
+	
+	\begin{frame}
 		\frametitle{Face extractor}
 		As mentioned above, we used a face extractor for two reasons:
 		\begin{itemize}
@@ -225,17 +235,6 @@
 		
 		So we devised a very simple evolutionary algorithm, with accuracy on validation set as fitness function.
 	\end{frame}
-		
-	
-	\begin{frame}
-		\frametitle{Use-case process pipeline}
-		The overall child recognition pipeline consists in \textbf{3 steps}:
-		\begin{enumerate}
-			\item Acquisition of image from image sensor
-			\item Extraction of the faces in the image with MTCNN
-			\item Face classification using the ensemble
-		\end{enumerate}
-	\end{frame}	
 	
 	\section{The Results}
 
