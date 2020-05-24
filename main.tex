@@ -16,6 +16,7 @@
 \usepackage{listings}
 \usepackage{biblatex}
 \usepackage{hyperref}
+\usepackage{bm}
 
 \addbibresource{bib.bib}
 
@@ -163,7 +164,7 @@
 	\end{frame}
 	
 	\begin{frame}
-		\frametitle{Fisherface - Generalities and Training}
+		\frametitle{Fisherface: Generalities}
 		Given the real-time nature of the problem we are facing, we decided to try and use also a leaner method to determine whether a face in the image belongs to a child or an adult: Fisherface.
 		
 		\bigskip
@@ -173,7 +174,7 @@
 	\end{frame}
 	
 	\begin{frame}
-		\frametitle{Fischerface - Training}
+		\frametitle{Fisherface: Generalities}
 		Once the dataset is projected onto the new basis, we use it to compute the covariance matrix and the mean vector for each class.
 		
 		\bigskip
@@ -190,17 +191,64 @@
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Fischerface - Test}
-		The dot product between the basis resulting from the PCA and the generalized eigenvector, we obtain a transformation which projects the flattened pictures directly on the latter, making this method particularly suitable for our problem.
+		\frametitle{Fisherface: Generalities}
+		Computing the dot product between the basis resulting from the PCA and the generalized eigenvector, we obtain a transformation which projects the flattened pictures directly on the latter. This makes the method particularly suitable for our problem.
 		
 		\bigskip
 		
-		In the use case the pictures extracted by the MTCNN will only have to go through the following steps:
+		In our use case, the pictures extracted by the MTCNN will only have to go through the following steps:
 		\begin{itemize}
-		\item The picture must be resized and flattened, then
-		\item Projected onto the generalized eigenvector, and finally
-		\item The projection has to be compared with a threshold $T$ (if it is $>T$ it will be classified as child, otherwise as adult) 
+		\item The picture must be resized and flattened, then;
+		\item Projected onto the generalized eigenvector, and finally;
+		\item The projection has to be compared with a threshold $T$ (if it is $>T$ it will be classified as child, otherwise as adult).
 		\end{itemize}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Fisherface: The Threshold}
+		According to the Fisher's linear discriminant theory, the threshold $T$ that best separates the data is
+		
+		\begin{equation*}
+		T = \frac{\bm{w} \cdot (\bm{\mu}_0 + \bm{\mu}_1)}{2}, 
+		\end{equation*}
+		
+		where $\bm{w}$ is the generalized eigenvector and $\bm{\mu}_0, \bm{\mu}_1$ are the means of the two classes after they've been projected on the principal components' basis.
+		
+		\bigskip
+		 
+		The following table shows the results (on the test set) for discriminating adults and children, using different picture (input) sizes and $n \in \left\{ 100,200,300,400,500\right\}$ principal components.
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Fisherface: Test table}
+		\begin{table}[]
+			\centering
+			\resizebox{0.76\textwidth}{!}{%
+				\begin{tabular}{|l|l|l|l|l|}
+					\hline
+					\begin{tabular}[c]{@{}l@{}}Input \\ Size\end{tabular} &
+					\begin{tabular}[c]{@{}l@{}}Principal \\ Components\end{tabular} &
+					\begin{tabular}[c]{@{}l@{}}Accuracy on \\ Children\end{tabular} &
+					\begin{tabular}[c]{@{}l@{}}Accuracy on \\ Adults\end{tabular} &
+					Threshold \\ \hline
+					100x100 & 500 & 88,63 & 72,27 & 1,485 \\ \cline{2-5} 
+					& 400 & 88,37 & 71,43 & 1,477 \\ \cline{2-5} 
+					& 300 & 89,14 & 70,17 & 1,448 \\ \cline{2-5} 
+					& 200 & 89,4  & 70,59 & 1,415 \\ \cline{2-5} 
+					& 100 & 88,37 & 68,48 & 1,394 \\ \hline
+					50x50 & 500 & 88,11 & 72,27 & 1,484 \\ \cline{2-5} 
+					& 400 & 88,89 & 72,27 & 1,467 \\ \cline{2-5} 
+					& 300 & 88,89 & 70,17 & 1,450 \\ \cline{2-5} 
+					& 200 & 88,63 & 70,17 & 1,408 \\ \cline{2-5} 
+					& 100 & 88,63 & 68,07 & 1,392 \\ \hline
+					30x30 & 500 & 87,08 & 70,17 & 1,491 \\ \cline{2-5} 
+					& 400 & 86,56 & 72,27 & 1,472 \\ \cline{2-5} 
+					& 300 & 88,63 & 73,11 & 1,435 \\ \cline{2-5} 
+					& 200 & 88,37 & 72,26 & 1,409 \\ \cline{2-5} 
+					& 100 & 89,15 & 67,65 & 1,388 \\ \hline
+				\end{tabular}%
+			}
+		\end{table}
 	\end{frame}
 	
 	\begin{frame}
@@ -270,13 +318,6 @@
 		\bigskip
 		
 		So we devised a very simple evolutionary algorithm, with accuracy on validation set as fitness function.
-	\end{frame}
-	
-	\section{The Results}
-
-	\begin{frame}
-		\frametitle{Fisherface - Training results}
-		TODO	
 	\end{frame}
 	
 	\begin{frame}
