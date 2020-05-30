@@ -15,6 +15,7 @@
 \usepackage{amssymb,amsmath}
 \usepackage{listings}
 \usepackage{biblatex}
+\usepackage{media9, xcolor}
 \usepackage{hyperref}
 \usepackage{bm}
 
@@ -22,6 +23,8 @@
 
 \lstset{columns=fullflexible}
 \newcommand{\link}[1]{{\color{blue}\href{#1}{#1}}}
+% L-Norm command
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
 
 \title{In-vehicle baby alert system}
 \subtitle{Advanced Digital Image Processing project}
@@ -362,6 +365,45 @@
 	\end{frame}
 	
 	\section{Conclusions}
+	
+	\begin{frame}
+		\frametitle{Improvements: Child-Seat Detection System}
+		When used properly, only children should be sitting on the child-seat. This assumption would imply a completely different approach for the detection of the presence of the child in the car.
+		
+		\bigskip
+		
+		Instead of relying on the face detection and classification, we can assume that, when a child seat is detected in a certain region, if a face is detected in the same region that would belong to a child. Under this assumption it would be possible to perform the face classification task fewer times in order to increase the general speed of  the system.
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Improvements: Child-Seat Detection System}
+		In order to find the region where the child-seat is, we decided to employ SIFT descriptors in order to store features of the child seat owned by the user and use them to recognize future instances of the same.
+		
+		\bigskip
+		
+		The collection of the SIFT descriptors would be performed through the same camera used for the detection in order to ensure little variation in the point of view over the child-seat. The collection of the descriptors is bound to the presence of the child-seat, therefore the system must include a detector for a generic child-seat.
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Improvements: Child-Seat Detection System}
+		\begin{figure}
+			\centering
+			\includegraphics[width=0.7\textwidth]{img/SIFT_collection.png}
+		\end{figure}
+		The steps for our generic child-seat detection system are:
+		
+		\begin{enumerate}
+			\item Collection of SIFT descriptors from child-seat pictures;
+			\item Creation of a Bag Of Visual Words $\mathcal{B}$ using K-Means clustering algorithm;
+			\item Collection of SIFT descriptors from the camera input and representation in the BOVW feature space;
+			\item We assume that the input $\hat{x}$ contains a child-seat if the following statement holds true for at least $n$ patterns in $\mathcal{B}$:
+				\begin{equation*}
+				\norm{\hat{x} - x_{\mathcal{B}}} < \gamma,
+				\quad x_{\mathcal{B}} \in \mathcal{B}
+				\end{equation*}
+		\end{enumerate}		
+	\end{frame}
+
 	% TODO Parlare qui delle challange incontrati
 	\begin{frame}
 		\frametitle{SIFT-SURF trade-off}
