@@ -404,6 +404,71 @@
 		\end{enumerate}		
 	\end{frame}
 
+	\begin{frame}
+		\frametitle{Improvements: Generic Child-Seat Detection}
+		Using $275$ pictures gathered from the internet, $50$ clusters when creating the BOVW and as parameters $n=10, \gamma=0.1$, we obtained the following result:
+		
+		\bigskip
+		
+		\begin{minipage}{0.5\textwidth}
+			\begin{center}
+				{\small Input frames}
+			\end{center}
+		\end{minipage}%
+		\begin{minipage}{0.5\textwidth}
+			\begin{center}
+				\begin{small}
+					Frames where a child-seat\
+					has been detected
+				\end{small}
+			\end{center}
+		\end{minipage}
+	
+		\bigskip
+		
+		\includemedia[width=\textwidth,
+					 addresource=videos/detection.mp4,
+					 transparent,
+					 activate=pagevisible,
+					 flashvars={
+					 	source=videos/detection.mp4
+						&autoplay=true
+						&loop=false}]
+		{\textcolor{white}{Video}}{VPlayer9.swf}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Improvements: User's Child-Seat Detection}
+		From the frames where a generic child-seat is detected the SIFT descriptors are computed.
+		
+		\bigskip
+		
+		Ideally, if the car's backseat is free from clutter, the descriptors should gather around the child-seat. A good way to remove descriptors not belonging to the child-seat, would be to use the mean and standard deviation of the key-points' position to exclude the outliers.
+		
+		\bigskip
+		
+		The detection of the user's child seat is performed by comparing the SIFT descriptors gathered in the previous step with the new ones from the camera input.
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Improvements: User's Child-Seat Detection}
+		Using two frames (and their horizontally flipped versions) from the unprocessed version of the video below, we obtained the following result.
+		
+		\bigskip
+		
+		\includemedia[width=\textwidth,
+					 addresource=videos/BB.mp4,
+					 transparent,
+					 activate=pagevisible,
+					 flashvars={
+					 	source=videos/BB.mp4
+					 	&autoplay=true
+					 	&loop=false}]
+		{\textcolor{white}{Video}}{VPlayer9.swf}
+		
+		The red circle is the mean of the key-points (black circles), the green bounding box includes all the key-points while the blue one is a $200 \times 200$ pixels square centered in the mean.
+	\end{frame}
+
 	% TODO Parlare qui delle challange incontrati
 	\begin{frame}
 		\frametitle{SIFT-SURF trade-off}
