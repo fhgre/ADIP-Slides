@@ -246,7 +246,7 @@
 					& 100 & 88,63 & 68,07 & 1,392 \\ \hline
 					30x30 & 500 & 87,08 & 70,17 & 1,491 \\ \cline{2-5} 
 					& 400 & 86,56 & 72,27 & 1,472 \\ \cline{2-5} 
-					& 300 & 88,63 & 73,11 & 1,435 \\ \cline{2-5} 
+					& \textbf{300} & \textbf{88,63} & \textbf{73,11} & 1,435 \\ \cline{2-5} 
 					& 200 & 88,37 & 72,26 & 1,409 \\ \cline{2-5} 
 					& 100 & 89,15 & 67,65 & 1,388 \\ \hline
 				\end{tabular}%
@@ -358,30 +358,32 @@
 		\end{figure}
 	\end{frame}
 	
-	% TODO La section future work è meglio farla come una "sequenza" di frame
-	\begin{frame}
-		\frametitle{Autoencoder}
-		TO BE DETERMINED
-	\end{frame}
-	
 	\section{Conclusions}
 	
 	\begin{frame}
 		\frametitle{Improvements: Child-Seat Detection System}
-		When used properly, only children should be sitting on the child-seat. This assumption would imply a completely different approach for the detection of the presence of the child in the car.
+		When used properly, only children should be sitting on the child-seat. This assumption suggests a completely different approach for the detection of the presence of the child in the car.
 		
 		\bigskip
 		
-		Instead of relying on the face detection and classification, we can assume that, when a child seat is detected in a certain region, if a face is detected in the same region that would belong to a child. Under this assumption it would be possible to perform the face classification task fewer times in order to increase the general speed of  the system.
+		Instead of relying on the face detection and classification, we can assume that, when a child-seat is detected in a certain region, if a face is detected in the same region then it would belong to a child.
+		
+		\bigskip
+		
+		Under this assumption it would be possible to perform the face classification task fewer times in order to increase the general speed of the system.
 	\end{frame}
 
 	\begin{frame}
 		\frametitle{Improvements: Child-Seat Detection System}
-		In order to find the region where the child-seat is, we decided to employ SIFT descriptors in order to store features of the child seat owned by the user and use them to recognize future instances of the same.
+		We decided to employ SIFT descriptors for determining the region where the child-seat is. These descriptors represent features of the child-seat (owned by the user) which can be use to recognize future instances of it.
 		
 		\bigskip
 		
-		The collection of the SIFT descriptors would be performed through the same camera used for the detection in order to ensure little variation in the point of view over the child-seat. The collection of the descriptors is bound to the presence of the child-seat, therefore the system must include a detector for a generic child-seat.
+		The collection of the SIFT descriptors would be performed through the same camera used for the detection. This ensures little variation in the point of view over the child-seat.
+		
+		\bigskip
+		
+		Note that the system must include a detector for a generic child-seat since the collection of the descriptors is \textit{bound} to the presence of the child-seat.
 	\end{frame}
 
 	\begin{frame}
@@ -389,24 +391,34 @@
 		\begin{figure}
 			\centering
 			\includegraphics[width=0.7\textwidth]{img/SIFT_collection.png}
+			\caption{Detection system block diagram - Overview.}
 		\end{figure}
-		The steps for our generic child-seat detection system are:
-		
-		\begin{enumerate}
-			\item Collection of SIFT descriptors from child-seat pictures;
-			\item Creation of a Bag Of Visual Words $\mathcal{B}$ using K-Means clustering algorithm;
-			\item Collection of SIFT descriptors from the camera input and representation in the BOVW feature space;
-			\item We assume that the input $\hat{x}$ contains a child-seat if the following statement holds true for at least $n$ patterns in $\mathcal{B}$:
-				\begin{equation*}
-				\norm{\hat{x} - x_{\mathcal{B}}} < \gamma,
-				\quad x_{\mathcal{B}} \in \mathcal{B}
-				\end{equation*}
-		\end{enumerate}		
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Improvements: Generic Child-Seat Detection}
-		Using $275$ pictures gathered from the internet, $50$ clusters when creating the BOVW and as parameters $n=10, \gamma=0.1$, we obtained the following result:
+		\frametitle{Improvements: Child-Seat Detection System}
+		The steps for our generic child-seat detection system are:
+		
+		\begin{enumerate}
+			\item Collection of SIFT descriptors from child-seat images;
+			\item Creation of a Bag Of Visual Words $\mathcal{B}$ using K-Means clustering algorithm;
+			\item Collection of SIFT descriptors from the camera input stream and representation in the BOVW feature space;
+			\item We assume that the input $\hat{x}$ contains a child-seat if the following statement holds true for at least $n$ patterns in $\mathcal{B}$
+		\end{enumerate}
+		\begin{equation*}
+			\norm{\hat{x} - x_{\mathcal{B}}} < \gamma,
+			\quad x_{\mathcal{B}} \in \mathcal{B}.
+		\end{equation*}
+	\end{frame}
+
+	\begin{frame}
+		\frametitle{Improvements: Child-Seat Detection System}
+		The following results were obtained by using:
+		\begin{itemize}
+			\item $197$ images taken from the internet;
+			\item $50$ clusters when creating the BOVW;
+			\item $n=5, \gamma=0.1$.
+		\end{itemize}
 		
 		\bigskip
 		
@@ -438,20 +450,20 @@
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Improvements: User's Child-Seat Detection}
+		\frametitle{Improvements: Child-Seat Detection System}
 		From the frames where a generic child-seat is detected the SIFT descriptors are computed.
 		
 		\bigskip
 		
-		Ideally, if the car's backseat is free from clutter, the descriptors should gather around the child-seat. A good way to remove descriptors not belonging to the child-seat, would be to use the mean and standard deviation of the key-points' position to exclude the outliers.
+		Ideally, if the car's backseat is free from clutter, the descriptors should gather around the child-seat. A good way to remove descriptors not belonging to the child-seat (i.e. the outliers) would be to use the mean and standard deviation of the key-points' position.
 		
 		\bigskip
 		
-		The detection of the user's child seat is performed by comparing the SIFT descriptors gathered in the previous step with the new ones from the camera input.
+		The detection of the user's child-seat is performed by comparing the SIFT descriptors taken in the previous step (i.e. the second block of the block diagram) with the new ones from the camera input.
 	\end{frame}
 
 	\begin{frame}
-		\frametitle{Improvements: User's Child-Seat Detection}
+		\frametitle{Improvements: Child-Seat Detection System}
 		Using two frames (and their horizontally flipped versions) from the unprocessed version of the video below, we obtained the following result.
 		
 		\bigskip
@@ -469,19 +481,8 @@
 		The red circle is the mean of the key-points (black circles), the green bounding box includes all the key-points while the blue one is a $200 \times 200$ pixels square centered in the mean.
 	\end{frame}
 
-	% TODO Parlare qui delle challange incontrati
-	\begin{frame}
-		\frametitle{SIFT-SURF trade-off}
-		TODO trade-off tra dimensione del set di indicatori e velocità di esecuzione
-	\end{frame}
-	
 	\begin{frame}
 		\frametitle{RGB vs BGR in OpenCV}
-		TODO
-	\end{frame}
-	
-	\begin{frame}
-		\frametitle{Min face dimension for MTCNN}
 		TODO
 	\end{frame}
 	
