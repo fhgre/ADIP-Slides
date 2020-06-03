@@ -483,7 +483,20 @@
 
 	\begin{frame}
 		\frametitle{RGB vs BGR in OpenCV}
-		TODO
+		
+		While we were testing our final product, we thought about how OpenCV reads images and remembered that it uses the BGR\footnote{Sembra che lo usino perché era popolare tra i costruttori di videocamere, lo mettiamo? fonte: https://www.learnopencv.com/why-does-opencv-use-bgr-color-format/} color space. 
+		
+		\bigskip
+		
+		So we tested how the performance changed by converting the BGR image in RGB and, surprisingly, we observed that MTCNN did detect faces more reliably. 
+		 
+
+		
+	\end{frame}
+
+	\begin{frame}
+	\frametitle{RGB vs BGR in OpenCV}
+	Qui ci mettiamo i due video, quello in BGR e quello in RGB, uno accanto all'altro
 	\end{frame}
 	
 	\begin{frame}
